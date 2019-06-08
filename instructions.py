@@ -1,7 +1,35 @@
 from memory import Memory
 
-def MOVE(memory, operand):
+def MOVE(memory, operando1, operando2, PC):
+    print(PC)
+    op1 = operando1
+    mem = memory.memory
+    if operando1 in memory.registers:
+        if operando1[0] == 'd':
+            operando1 = memory.registers[operando1]
+        elif operando1[0] == 'a':
+            operando1 = int(memory.memory[int(memory.registers[operando1])])
+    elif operando1 == 'address':
+        operando1 = int(mem[int(mem[PC + 2])])
+    elif operando1 == 'constant':
+        operando1 = int(mem[PC + 2])
 
+    if operando2 in memory.registers:
+        if operando2[0] == 'd':
+            memory.registers[operando2] = operando1
+        elif operando2[0] == 'a':
+            memory.memory[memory.registers[operando2]] = operando1
+        if op1 == 'address' or op1 == 'constant':
+            memory.PC = memory.PC + 3
+        else:
+            memory.PC += 2
+    elif operando2 == 'address' and op1 in memory.registers:
+        memory.memory[PC + 2] = operando1
+        memory.PC = memory.PC + 3
+    elif operando2 == 'address' and op1 == 'address':
+        memory.memory[int(memory.memory[PC + 3])] = operando1
+        memory.PC = memory.PC + 4
+    print(memory.PC)
     return memory
 
 def ADD(org, dest):
@@ -49,24 +77,14 @@ def tratar(memory, inicio):
     PC = memory.PC
     mem = memory.memory
     while mem[PC] != 240:
+        mem = memory.memory
+        PC = memory.PC
         operando1 = operando(int(mem[PC + 1] / 16))
         operando2 = operando(int(mem[PC + 1] % 16))
         memory.CR = operando1
 
         if mem[PC] == int("10", 16):
-            if operando1 in memory.registers:
-                operando1 = memory.registers[operando1]
-            elif operando1 == 'address':
-                operando1 = int(mem[int(mem[PC + 2])])
-            elif operando1 == 'constant':
-                operando1 = int(mem[PC + 2])
-
-            if operando2 in memory.registers:
-                memory.registers[operando2] = operando1
-            elif operando2 == 'address':
-                memory.memory[int(operando2, 16)] = operando1
-            memory.PC = memory.PC + 3
-            PC += 3
+            memory = MOVE(memory, operando1, operando2, PC)
 
 
     return memory
