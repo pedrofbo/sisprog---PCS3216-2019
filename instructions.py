@@ -67,5 +67,6 @@ def tratar(memory, inicio):
                 memory.memory[int(operando2, 16)] = operando1
             memory.PC = memory.PC + 3
             PC += 3
+            
 
     return memory
