@@ -1,27 +1,6 @@
 from memory import Memory
 from instructions import tratar
 
-"""
-def initMemory():
-    memory = np.zeros(2048)
-    return memory
-
-def showMemory(memory):
-    col = '0 1 2 3 4 5 6 7 8 9 A B C D E F'.split()
-    mem = pd.DataFrame(data=memory.reshape(128,16), columns=col)
-    ind = np.arange(0, 2048, 16)
-    i = 0
-    index = []
-    for num in ind:
-        index.append(hex(int(num)).upper()[2:])
-        i += 1
-    mem['address'] = index
-    mem.set_index('address', inplace=True)
-    memHex = mem.applymap(lambda x: hex(int(x)).upper()[2:])
-    print(mem.head(10).applymap(lambda x: hex(int(x)).upper()[2:]))
-
-    return memHex
-"""
 
 def MD(memory, address):
     print(f'{hex(int(address)).upper()[2:]} |     ', end='')

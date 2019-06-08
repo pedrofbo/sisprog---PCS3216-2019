@@ -1,7 +1,7 @@
 from memory import Memory
 
+### instrucao MOVE ###
 def MOVE(memory, operando1, operando2, PC):
-    print(PC)
     op1 = operando1
     mem = memory.memory
     if operando1 in memory.registers:
@@ -29,12 +29,74 @@ def MOVE(memory, operando1, operando2, PC):
     elif operando2 == 'address' and op1 == 'address':
         memory.memory[int(memory.memory[PC + 3])] = operando1
         memory.PC = memory.PC + 4
-    print(memory.PC)
     return memory
+### -------------- ###
 
-def ADD(org, dest):
-    dest = dest + org
-    return dest
+### instrucao ADD ###
+def ADD(memory, operando1, operando2, PC):
+    op1 = operando1
+    mem = memory.memory
+    if operando1 in memory.registers:
+        if operando1[0] == 'd':
+            operando1 = memory.registers[operando1]
+        elif operando1[0] == 'a':
+            operando1 = int(memory.memory[int(memory.registers[operando1])])
+    elif operando1 == 'address':
+        operando1 = int(mem[int(mem[PC + 2])])
+    elif operando1 == 'constant':
+        operando1 = int(mem[PC + 2])
+
+    if operando2 in memory.registers:
+        if operando2[0] == 'd':
+            memory.registers[operando2] += operando1
+        elif operando2[0] == 'a':
+            memory.memory[memory.registers[operando2]] += operando1
+        if op1 == 'address' or op1 == 'constant':
+            memory.PC = memory.PC + 3
+        else:
+            memory.PC += 2
+    elif operando2 == 'address' and op1 in memory.registers:
+        memory.memory[PC + 2] += operando1
+        memory.PC = memory.PC + 3
+    elif operando2 == 'address' and op1 == 'address':
+        memory.memory[int(memory.memory[PC + 3])] += operando1
+        memory.PC = memory.PC + 4
+    return memory
+### ------------- ###
+
+
+### instrucao SUB ###
+def SUB(memory, operando1, operando2, PC):
+    op1 = operando1
+    mem = memory.memory
+    if operando1 in memory.registers:
+        if operando1[0] == 'd':
+            operando1 = memory.registers[operando1]
+        elif operando1[0] == 'a':
+            operando1 = int(memory.memory[int(memory.registers[operando1])])
+    elif operando1 == 'address':
+        operando1 = int(mem[int(mem[PC + 2])])
+    elif operando1 == 'constant':
+        operando1 = int(mem[PC + 2])
+
+    if operando2 in memory.registers:
+        if operando2[0] == 'd':
+            memory.registers[operando2] -= operando1
+        elif operando2[0] == 'a':
+            memory.memory[memory.registers[operando2]] -= operando1
+        if op1 == 'address' or op1 == 'constant':
+            memory.PC = memory.PC + 3
+        else:
+            memory.PC += 2
+    elif operando2 == 'address' and op1 in memory.registers:
+        memory.memory[PC + 2] -= operando1
+        memory.PC = memory.PC + 3
+    elif operando2 == 'address' and op1 == 'address':
+        memory.memory[int(memory.memory[PC + 3])] -= operando1
+        memory.PC = memory.PC + 4
+    return memory
+### ------------- ###
+
 
 def operando(code):
     if len(bin(code)[2:]) == 1:
@@ -85,6 +147,10 @@ def tratar(memory, inicio):
 
         if mem[PC] == int("10", 16):
             memory = MOVE(memory, operando1, operando2, PC)
+        elif mem[PC] == int("20", 16):
+            memory = ADD(memory, operando1, operando2, PC)
+        elif mem[PC] == int("30", 16):
+            memory = SUB(memory, operando1, operando2, PC)
 
 
     return memory
