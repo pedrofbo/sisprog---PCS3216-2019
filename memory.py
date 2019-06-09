@@ -39,8 +39,16 @@ class Memory():
         self.memory = np.zeros(2048)
 
     def showRegisters(self):
-        print(f'PC = {hex(self.PC).upper()[2:]}  CR = {self.CR}')
+        print(f'PC = {hex(self.PC).upper()[2:]}  CR = {hex(self.CR).upper()[2:]}')
         print(f"D0 = {hex(self.registers['d0']).upper()[2:]}  D1 = {hex(self.registers['d1']).upper()[2:]}\
   D2 = {hex(self.registers['d2']).upper()[2:]}  D3 = {hex(self.registers['d3']).upper()[2:]}")
         print(f"A0 = {hex(self.registers['a0']).upper()[2:]}  A1 = {hex(self.registers['a1']).upper()[2:]}\
   A2 = {hex(self.registers['a2']).upper()[2:]}  A3 = {hex(self.registers['a3']).upper()[2:]}")
+
+    def loadMemory(self, arquivo):
+        programa = open(arquivo, "r").read().split()
+        org = int(programa[0], 16)
+
+        for byte in programa[1:]:
+            self.memory[org] = int(byte, 16)
+            org += 1

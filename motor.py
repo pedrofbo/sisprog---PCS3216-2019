@@ -62,6 +62,9 @@ def main(memory):
         elif 'RUN' in command[0] and len(command) == 2:
             memory = tratar(memory, int(command[1], 16))
 
+        elif 'load' in command[0]:
+            memory.loadMemory(command[1])
+
         else:
             print('Insira um comando válido!')
 
