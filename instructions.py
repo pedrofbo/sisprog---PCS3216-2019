@@ -278,6 +278,73 @@ def SUBA(memory, operando1, operando2, PC):
     return memory
 ### ------------- ###
 
+### instrucao MOVE ADDRESS###
+def MOVEA(memory, operando1, operando2, PC):
+    op1 = operando1
+    mem = memory.memory
+    if operando1 in memory.registers:
+        if operando1[0] == 'd':
+            operando1 = memory.registers[operando1]
+        elif operando1[0] == 'a':
+            operando1 = int(memory.memory[int(memory.registers[operando1])])
+    elif operando1 == 'address':
+        operando1 = int(mem[int(mem[PC + 2])])
+    elif operando1 == 'constant':
+        operando1 = int(mem[PC + 2])
+
+    memory.registers[operando2] = operando1
+    if op1 == 'address' or op1 == 'constant':
+        memory.PC = memory.PC + 3
+    else:
+        memory.PC += 2
+    return memory
+### ------------- ###
+
+### instrucao COMPARE ADDRESS ###
+# compare entre um operando e o valor direto salvo em
+# um address register
+def CMPA(memory, operando1, operando2, PC):
+    op1 = operando1
+    mem = memory.memory
+    if operando1 in memory.registers:
+        if operando1[0] == 'd':
+            operando1 = memory.registers[operando1]
+        elif operando1[0] == 'a':
+            operando1 = int(memory.registers[operando1])
+    elif operando1 == 'address':
+        operando1 = int(mem[int(mem[PC + 2])])
+    elif operando1 == 'constant':
+        operando1 = int(mem[PC + 2])
+
+
+    if memory.registers[operando2] - operando1 == 0:
+        memory.CR = 1
+    elif memory.registers[operando2] - operando1 > 0:
+        memory.CR = 2
+    else:
+        memory.CR = 3
+
+    if op1 == 'address' or op1 == 'constant':
+        memory.PC = memory.PC + 3
+    else:
+        memory.PC += 2
+    return memory
+### ------------------ ###
+
+### instrucoes BSR e RTS ###
+#chama uma subrotina e depois retorna o PC para o endereço seguinte
+# a chamada da subrotina
+def BSR(memory, PC):
+    memory.RR = PC + 2
+    memory.PC = int(memory.memory[PC + 1])
+    return memory
+
+def RTS(memory, PC):
+    memory.PC = memory.RR
+    memory.RR = 0
+    return memory
+### -------------- ###
+
 
 def operando(code):
     if len(bin(code)[2:]) == 1:
@@ -326,6 +393,8 @@ def tratar(memory, inicio):
 
         if mem[PC] == int("10", 16):        #MOVE
             memory = MOVE(memory, operando1, operando2, PC)
+        elif mem[PC] == int("11", 16):        #MOVE ADDRESS
+            memory = MOVEA(memory, operando1, operando2, PC)
         elif mem[PC] == int("20", 16):      #ADD
             memory = ADD(memory, operando1, operando2, PC)
         elif mem[PC] == int("21", 16):      #ADD ADDRESS
@@ -339,6 +408,8 @@ def tratar(memory, inicio):
 
         elif mem[PC] == int("50", 16):      #COMPARE
             memory = CMP(memory, operando1, operando2, PC)
+        elif mem[PC] == int("51", 16):      #COMPARE ADDRESS
+            memory = CMPA(memory, operando1, operando2, PC)
         elif mem[PC] == int("61", 16):      #BRANCH ON EQUAL
             memory = BEQ(memory, PC)
         elif mem[PC] == int("62", 16):      #BRANCH ON NOT EQUAL
@@ -350,6 +421,16 @@ def tratar(memory, inicio):
 
         elif mem[PC] == int("70", 16):      #MULT
             memory = MULT(memory, operando1, operando2, PC)
+
+        elif mem[PC] == int("80", 16):      #BRANCH SUB ROTINA
+            memory = BSR(memory, PC)
+        elif mem[PC] == int("81", 16):      #RTS
+            memory = RTS(memory, PC)
+
+
+        else:
+            memory.PC += 1
+
 
         memory.showRegisters()
 

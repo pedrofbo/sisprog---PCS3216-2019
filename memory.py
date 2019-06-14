@@ -17,6 +17,7 @@ class Memory():
 
     PC = 0
     CR = 0
+    RR = 0
 
 
     def showMemory(self):
@@ -39,7 +40,7 @@ class Memory():
         self.memory = np.zeros(2048)
 
     def showRegisters(self):
-        print(f'PC = {hex(self.PC).upper()[2:]}  CR = {hex(self.CR).upper()[2:]}')
+        print(f'PC = {hex(self.PC).upper()[2:]}  CR = {hex(self.CR).upper()[2:]}  RR = {hex(self.RR).upper()[2:]}')
         print(f"D0 = {hex(self.registers['d0']).upper()[2:]}  D1 = {hex(self.registers['d1']).upper()[2:]}\
   D2 = {hex(self.registers['d2']).upper()[2:]}  D3 = {hex(self.registers['d3']).upper()[2:]}")
         print(f"A0 = {hex(self.registers['a0']).upper()[2:]}  A1 = {hex(self.registers['a1']).upper()[2:]}\
