@@ -47,7 +47,7 @@ class Memory():
   A2 = {hex(self.registers['a2']).upper()[2:]}  A3 = {hex(self.registers['a3']).upper()[2:]}")
 
     def loadMemory(self, arquivo):
-        programa = open(arquivo, "r").read().split()
+        programa = open('programas/' + arquivo, "r").read().split()
         org = int(programa[0], 16)
 
         for byte in programa[1:]:

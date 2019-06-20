@@ -1,0 +1,19 @@
+ 	org	$40
+	MOVEA	#20,A2
+inicio	MOVEA	#0,A0
+	MOVEA	#1,A1
+cont	CMP	A0,A1
+	BLT	troca
+inc	ADDA	#1,A0
+	ADDA	#1,A1
+	CMPA	A1,A2
+	BNE	cont
+	BEQ	dec
+troca	MOVE	A0,D0
+	MOVE	A1,A0
+	MOVE	D0,A1
+	JUMP	inc
+dec	SUBA	#1,A2
+	CMPA	#2,A2
+	BNE	inicio
+	end

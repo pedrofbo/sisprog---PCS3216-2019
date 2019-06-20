@@ -1,0 +1,6 @@
+	org	$30
+	MOVE	D1,D0
+	ADD	D2,D1
+	SUB	D2,D0
+	MULT	D1,D0
+	end
