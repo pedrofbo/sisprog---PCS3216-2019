@@ -1,0 +1,5 @@
+	org	$40
+init	ADD	#1,D0
+	CMP	D0,D1
+	BNE	init
+	end

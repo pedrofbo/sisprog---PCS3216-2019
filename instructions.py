@@ -26,7 +26,7 @@ def MOVE(memory, operando1, operando2, PC):
     elif operando2 == 'address' and op1 in memory.registers:
         memory.memory[int(memory.memory[PC + 2])] = operando1
         memory.PC = memory.PC + 3
-    elif operando2 == 'address' and op1 == 'address':
+    elif operando2 == 'address' and (op1 == 'address' or op1 == 'constant'):
         memory.memory[int(memory.memory[PC + 3])] = operando1
         memory.PC = memory.PC + 4
     return memory
@@ -391,47 +391,47 @@ def tratar(memory, inicio):
         operando1 = operando(int(mem[PC + 1] / 16))
         operando2 = operando(int(mem[PC + 1] % 16))
 
-        if mem[PC] == int("10", 16):        #MOVE
+        if mem[PC] == int("10", 16):        # MOVE
             memory = MOVE(memory, operando1, operando2, PC)
-        elif mem[PC] == int("11", 16):        #MOVE ADDRESS
+        elif mem[PC] == int("11", 16):        # MOVE ADDRESS
             memory = MOVEA(memory, operando1, operando2, PC)
-        elif mem[PC] == int("20", 16):      #ADD
+        elif mem[PC] == int("20", 16):      # ADD
             memory = ADD(memory, operando1, operando2, PC)
-        elif mem[PC] == int("21", 16):      #ADD ADDRESS
+        elif mem[PC] == int("21", 16):      # ADD ADDRESS
             memory = ADDA(memory, operando1, operando2, PC)
-        elif mem[PC] == int("30", 16):      #SUB
+        elif mem[PC] == int("30", 16):      # SUB
             memory = SUB(memory, operando1, operando2, PC)
-        elif mem[PC] == int("31", 16):      #SUB ADDRESS
+        elif mem[PC] == int("31", 16):      # SUB ADDRESS
             memory = SUBA(memory, operando1, operando2, PC)
-        elif mem[PC] == int("40", 16):      #JUMP
+        elif mem[PC] == int("40", 16):      # JUMP
             memory = JUMP(memory, PC)
 
-        elif mem[PC] == int("50", 16):      #COMPARE
+        elif mem[PC] == int("50", 16):      # COMPARE
             memory = CMP(memory, operando1, operando2, PC)
-        elif mem[PC] == int("51", 16):      #COMPARE ADDRESS
+        elif mem[PC] == int("51", 16):      # COMPARE ADDRESS
             memory = CMPA(memory, operando1, operando2, PC)
-        elif mem[PC] == int("61", 16):      #BRANCH ON EQUAL
+        elif mem[PC] == int("61", 16):      # BRANCH ON EQUAL
             memory = BEQ(memory, PC)
-        elif mem[PC] == int("62", 16):      #BRANCH ON NOT EQUAL
+        elif mem[PC] == int("62", 16):      # BRANCH ON NOT EQUAL
             memory = BNE(memory, PC)
-        elif mem[PC] == int("63", 16):      #BRANCH ON HIGHER THAN
+        elif mem[PC] == int("63", 16):      # BRANCH ON HIGHER THAN
             memory = BHI(memory, PC)
-        elif mem[PC] == int("64", 16):      #BRANCH ON LOWER THAN
+        elif mem[PC] == int("64", 16):      # BRANCH ON LOWER THAN
             memory = BLT(memory, PC)
 
-        elif mem[PC] == int("70", 16):      #MULT
+        elif mem[PC] == int("70", 16):      # MULT
             memory = MULT(memory, operando1, operando2, PC)
 
-        elif mem[PC] == int("80", 16):      #BRANCH SUB ROTINA
+        elif mem[PC] == int("80", 16):      # BRANCH SUB ROTINA
             memory = BSR(memory, PC)
-        elif mem[PC] == int("81", 16):      #RTS
+        elif mem[PC] == int("81", 16):      # RTS
             memory = RTS(memory, PC)
 
 
         else:
             memory.PC += 1
 
-
+        print("\n")
         memory.showRegisters()
 
     return memory

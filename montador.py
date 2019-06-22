@@ -72,7 +72,7 @@ def segundoPasso(assembly, PC):
             programa += operandos[op[0][0]]
             if op[1] in operandos:
                 programa += operandos[op[1]] + " "
-            elif '$' in op[0]:
+            elif '$' in op[0] or '#' in op[0]:
                 programa += operandos[op[1][0]] + " "
         elif op[0] != '0':
             y = assembly[assembly['label'] == op[0]]['endereço'].max()

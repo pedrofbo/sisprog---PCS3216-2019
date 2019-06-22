@@ -1,0 +1,18 @@
+	org	$10
+	MOVE	#1,$40
+	MOVE	#1,$41
+	MOVEA	#40,A0
+	MOVEA	#41,A1
+	MOVEA	#42,A2
+init	ADD	#1,D0
+	MOVE	A1,D1
+	ADD	A0,A1
+	MOVE	A1,A2
+	MOVE	D1,A1
+	ADDA	#1,A0
+	ADDA	#1,A1
+	ADDA	#1,A2
+	CMP	#10,D0
+	BNE	init
+	end
+	

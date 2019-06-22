@@ -44,6 +44,7 @@ def HELP():
     print("\n   Comandos disponiveis:")
     print("show: mostra as primeiras 100 posições de memória")
     print("load <arquivo>: carrega um arquivo contendo valores hexadecimais na memoria")
+    print("assemble <arquivo>: converte um programa assembly para a linguagem de máquina")
     print("clear: limpa toda a memória")
     print("exit: encerra o programa")
     print("MD <endereço de memória>: mostra o valor salvo no endereço determinado e nas F psoições seguintes")
