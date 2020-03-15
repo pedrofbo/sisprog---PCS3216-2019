@@ -434,4 +434,5 @@ def tratar(memory, inicio):
         print("\n")
         memory.showRegisters()
 
+
     return memory
